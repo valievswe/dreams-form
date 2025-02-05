@@ -38,16 +38,19 @@ bot.on("callback_query", async (query) => {
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
 
-  const helloMessage = `Assalomu alaykum! 🌟 Bu *registratsiya botiga* xush kelibsiz.
+  const helloMessage = `Assalomu alaykum! 🌟 Bu bot orqali Dreams School maktabiga ro'yxatdan o'tasiz.
 
-Quyidagi ma'lumotlarni kiriting:
+  Boshlash uchun 📑 Registratsiya buyrug'ini tanlang va quyidagi ma'lumotlarni kiriting:
 1. 👤 To'liq ismingiz
 2. 📅 Tug'ilgan sanangiz
 3. 📞 Telefon raqamingiz
 4. 🏠 Qayerdan ekanligingiz
-5. 🏫 Qaysi maktabdan o'qiysiz
-6. 🎓 Qaysi sinfda o'qiysiz
-7. 📞 Qo'shimcha telefon raqamingiz (agar bor bo'lsa)`;
+5. 🏫 Qaysi maktabda o'qir edingiz
+6. 🎓 Qaysi sinfga kirmoqdasiz
+7. 📞 Qo'shimcha telefon raqamingiz
+
+Yordam uchun +998959000407 yoki +998912000190 raqamlariga murojaat qiling.`;
+
   bot.sendMessage(chatId, helloMessage, getKeyboard(chatId));
 });
 
