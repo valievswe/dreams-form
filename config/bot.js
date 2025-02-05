@@ -37,7 +37,19 @@ bot.on("callback_query", async (query) => {
 // Define start command with keyboard
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, "Brini tanlang:", getKeyboard(chatId));
+  const helloMessage = `Assalomu alaykum! 🌟 Bu *registratsiya botiga* xush kelibsiz.
+
+Quyidagi ma'lumotlarni kiriting:
+1. 👤 To'liq ismingiz
+2. 📅 Tug'ilgan sanangiz
+3. 📞 Telefon raqamingiz
+4. 🏠 Qayerdan ekanligingiz
+5. 🏫 Qaysi maktabdan o'qiysiz
+6. 🎓 Qaysi sinfda o'qiysiz
+7. 📞 Qo'shimcha telefon raqamingiz (agar bor bo'lsa)
+
+Sizni ro'yxatdan o'tkazish uchun kerakli ma'lumotlarni kiriting.`;
+  bot.sendMessage(chatId, helloMessage, { parse_mode: "Markdown" });
 });
 
 // Handling non-command messages

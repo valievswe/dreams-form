@@ -132,14 +132,14 @@ const commandHandler = async (msg, bot) => {
         if (existingUser) {
           bot.sendMessage(
             chatId,
-            "❌ Ushbu telefon raqami allaqachon ro‘yxatdan o‘tgan."
+            "❌ Ushbu telefon raqami allaqachon ro‘yxatdan o‘tgan. Iltimos yangi raqam bilan ro‘yxatdan o‘ting."
           );
           return;
         }
 
         userStates[chatId].data.phone = phoneNumber;
         userStates[chatId].state = STATES.AWAITING_FROM_WHERE;
-        bot.sendMessage(chatId, "Qayerdansiz?");
+        bot.sendMessage(chatId, "Qayerdansiz, yashash joyingiz?");
       } else if (currentState?.state === STATES.AWAITING_FROM_WHERE) {
         userStates[chatId].data.fromWhere = text;
         userStates[chatId].state = STATES.AWAITING_SCHOOL;
@@ -201,10 +201,7 @@ const commandHandler = async (msg, bot) => {
 
         userStates[chatId].data.dateOfBirth = text;
         userStates[chatId].state = STATES.AWAITING_ADDITIONAL_PHONE;
-        bot.sendMessage(
-          chatId,
-          "Qo‘shimcha telefon raqamingizni kiriting (ixtiyoriy):"
-        );
+        bot.sendMessage(chatId, "Qo‘shimcha telefon raqamingizni kiriting:");
       } else if (currentState?.state === STATES.AWAITING_ADDITIONAL_PHONE) {
         userStates[chatId].data.additionalPhone = text || null;
         userStates[chatId].state = STATES.AWAITING_CONFIRMATION;
