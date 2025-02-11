@@ -14,7 +14,7 @@ bot.onText(
   /^(📑 Registratsiya|📚 DTM|📞 Biz bilan bog'lanish|📍 Manzilimiz|🗑 O'chirish|📋 Barcha foydalanuvchilar|stop)$/,
   async (msg) => {
     try {
-      await commandHandler(msg, bot); // Pass bot instance to commandHandler
+      await commandHandler(msg, bot);
     } catch (error) {
       console.error("Error handling command:", error);
       bot.sendMessage(msg.chat.id, "An error occurred. Please try again.");
@@ -54,17 +54,21 @@ Yordam uchun +998959000407 yoki +998912000190 raqamlariga murojaat qiling.`;
   bot.sendMessage(chatId, helloMessage, getKeyboard(chatId));
 });
 
-// Handling non-command messages
+// Handling non-command messages (only for registration process)
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
   const text = msg.text;
-
-  // Check if the user is in an ongoing registration process
   const currentState = userStates[chatId];
 
-  if (currentState) {
-    // If the user is in a state (e.g., awaiting name, phone, etc.),
-    // forward the message to the commandHandler to handle the state
+  // Only process messages if:
+  // 1. User is in a state AND
+  // 2. Message doesn't match command regex
+  if (
+    currentState &&
+    !text.match(
+      /^(📑 Registratsiya|📚 DTM|📞 Biz bilan bog'lanish|📍 Manzilimiz|🗑 O'chirish|📋 Barcha foydalanuvchilar|stop)$/
+    )
+  ) {
     try {
       await commandHandler(msg, bot);
     } catch (error) {
