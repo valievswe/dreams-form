@@ -17,6 +17,11 @@ const commandHandler = async (msg, bot) => {
 
   console.log("Received message:", text); // Debugging: Log the received message
 
+  if (text.toLowerCase() === "/stop" || text.toLowerCase() === "stop") {
+    await bot.sendMessage(chatId, "Jarayon bekor qilindi.");
+    return;
+  }
+
   switch (text) {
     case "/start":
       bot.sendMessage(chatId, "Brini tanlang:", getKeyboard(chatId));
