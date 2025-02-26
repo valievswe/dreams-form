@@ -54,16 +54,39 @@ Yordam uchun +998959000407 yoki +998912000190 raqamlariga murojaat qiling.`;
   bot.sendMessage(chatId, helloMessage, getKeyboard(chatId));
 });
 
+// Add special handler for contact messages
+bot.on("contact", async (msg) => {
+  const chatId = msg.chat.id;
+  const currentState = userStates[chatId];
+
+  console.log("Received contact message:", msg.contact);
+
+  if (currentState?.state === "AWAITING_PHONE") {
+    try {
+      // Pass the entire message to commandHandler - it has contact handling logic
+      await commandHandler(msg, bot);
+    } catch (error) {
+      console.error("Error handling contact message:", error);
+      bot.sendMessage(chatId, "An error occurred. Please try again.");
+    }
+  }
+});
+
 // Handling non-command messages (only for registration process)
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
   const text = msg.text;
   const currentState = userStates[chatId];
 
+  // Skip contact messages - they're handled by the contact handler above
+  if (msg.contact) {
+    return;
+  }
+
   // Only process messages if:
   // 1. User is in a state AND
-  // 2. Message doesn't match command regex
-  // Add check to ensure text exists before calling match()
+  // 2. Message has text AND
+  // 3. Message doesn't match command regex
   if (
     currentState &&
     text && // Add this check to ensure text is defined
