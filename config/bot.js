@@ -63,8 +63,10 @@ bot.on("message", async (msg) => {
   // Only process messages if:
   // 1. User is in a state AND
   // 2. Message doesn't match command regex
+  // Add check to ensure text exists before calling match()
   if (
     currentState &&
+    text && // Add this check to ensure text is defined
     !text.match(
       /^(📑 Registratsiya|📚 DTM|📞 Biz bilan bog'lanish|📍 Manzilimiz|🗑 O'chirish|📋 Barcha foydalanuvchilar|stop)$/
     )
