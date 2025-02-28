@@ -5,49 +5,78 @@ const PDFDocument = require("pdfkit");
 const moment = require("moment");
 const XLSX = require("xlsx");
 
-const createUser = async (userData, chatId, bot) => {
-  const {
-    fullName,
-    dateOfBirth,
-    phone,
-    fromWhere,
-    fromWhichSchool,
-    entranceGrade,
-    additionalPhone,
-  } = userData;
+// Helper function to generate a PDF for a single user
+const generateUserPDF = async (user, filePath) => {
+  const pdfDoc = new PDFDocument({ size: "A4", layout: "landscape" });
+  const writeStream = fs.createWriteStream(filePath);
+  pdfDoc.pipe(writeStream);
 
+  // Add header
+  pdfDoc
+    .fontSize(20)
+    .font("Helvetica-Bold")
+    .fillColor("blue")
+    .text("Dreams School", { align: "center" })
+    .moveDown(1);
+
+  // Add user data
+  pdfDoc
+    .fontSize(14)
+    .font("Helvetica")
+    .fillColor("black")
+    .text(`F.I.O: ${user.full_name || "N/A"}`, { align: "left" })
+    .text(
+      `Tug'ilgan sana: ${
+        moment(user.date_of_birth).format("DD MMM YYYY") || "N/A"
+      }`,
+      { align: "left" }
+    )
+    .text(`Telefon: ${user.phone || "N/A"}`, { align: "left" })
+    .text(`Qayerdan: ${user.from_where || "N/A"}`, { align: "left" })
+    .text(`Maktab: ${user.from_which_school || "N/A"}`, { align: "left" })
+    .text(`Kirish sinfi: ${user.entrance_grade || "N/A"}`, { align: "left" })
+    .text(`Qo'shimcha telefon: ${user.additional_phone || "N/A"}`, {
+      align: "left",
+    })
+    .moveDown(2);
+
+  // Add "TASDIQLANDI" message
+  pdfDoc
+    .fontSize(30)
+    .font("Helvetica-Bold")
+    .fillColor("green")
+    .text("TASDIQLANDI", { align: "center" })
+    .moveDown(2);
+
+  // Add footer
+  pdfDoc
+    .fontSize(10)
+    .font("Helvetica")
+    .fillColor("gray")
+    .text("Generated on: " + new Date().toLocaleString(), { align: "center" });
+
+  pdfDoc.end();
+
+  return new Promise((resolve, reject) => {
+    writeStream.on("finish", resolve);
+    writeStream.on("error", reject);
+  });
+};
+
+// Function to generate a PDF for all users
+const generateAllUsersPDF = async () => {
   try {
-    // Check if the phone number already exists
-    const existingUser = await User.findByPhone(phone);
-    if (existingUser) {
-      bot.sendMessage(chatId, "❌ Bu telefon raqam ro'yxatdan o'tgan.");
-      return;
-    }
+    const users = await User.findAll();
+    const pdfDir = path.resolve(__dirname, "../pdfs");
 
-    // Insert the new user
-    const newUser = await User.create({
-      fullName,
-      dateOfBirth,
-      phone,
-      fromWhere,
-      fromWhichSchool,
-      entranceGrade,
-      additionalPhone,
-    });
-
-    console.log("New user created:", newUser.full_name);
-
-    // Ensure the 'pdfs' directory exists in the root folder
-    const pdfDir = path.resolve(__dirname, "../pdfs"); // Absolute path to root's pdfs folder
     if (!fs.existsSync(pdfDir)) {
-      fs.mkdirSync(pdfDir); // Create 'pdfs' directory if it doesn't exist
+      fs.mkdirSync(pdfDir);
     }
 
-    // Generate PDF for the user
-    const pdfDoc = new PDFDocument({ size: "A4", layout: "landscape" });
-    const fileName = `student_${phone}.pdf`;
+    const fileName = `all_users.pdf`;
     const filePath = path.join(pdfDir, fileName);
 
+    const pdfDoc = new PDFDocument({ size: "A4", layout: "landscape" });
     const writeStream = fs.createWriteStream(filePath);
     pdfDoc.pipe(writeStream);
 
@@ -56,53 +85,20 @@ const createUser = async (userData, chatId, bot) => {
       .fontSize(20)
       .font("Helvetica-Bold")
       .fillColor("blue")
-      .text("Dreams School", { align: "center" })
+      .text("Dreams School - Barcha Foydalanuvchilar", { align: "center" })
       .moveDown(1);
 
-    // Format the date of birth
-    const formattedDateOfBirth = moment(newUser.date_of_birth).format(
-      "DD MMM YYYY"
-    );
-
-    // Add user data to the PDF
-    pdfDoc
-      .fontSize(14)
-      .font("Helvetica")
-      .fillColor("black")
-      .text(`F.I.O: ${newUser.full_name || "N/A"}`, { align: "left" })
-      .text(`Tug'ilgan sana: ${formattedDateOfBirth || "N/A"}`, {
-        align: "left",
-      })
-      .text(`Telefon: ${newUser.phone || "N/A"}`, { align: "left" })
-      .text(`Qayerdan: ${newUser.from_where || "N/A"}`, { align: "left" })
-      .text(`Maktab: ${newUser.from_which_school || "N/A"}`, { align: "left" })
-      .text(`Kirish sinfi: ${newUser.entrance_grade || "N/A"}`, {
-        align: "left",
-      })
-      .text(`Qo'shimcha telefon: ${newUser.additional_phone || "N/A"}`, {
-        align: "left",
-      })
-      .moveDown(2);
-
-    // Add "TASDIQLANDI" message
-    pdfDoc
-      .fontSize(30)
-      .font("Helvetica-Bold")
-      .fillColor("green")
-      .text("TASDIQLANDI", { align: "center" })
-      .moveDown(2);
-
-    // Add the school details
-    pdfDoc
-      .fontSize(12)
-      .font("Helvetica")
-      .fillColor("black")
-      .text("Dreams School", { align: "left" })
-      .text("Telefon: +998959000407", { align: "left" })
-      .text("Manzil: https://maps.app.goo.gl/bJJDFhc3p3hWdaRQ7", {
-        align: "left",
-      })
-      .moveDown(1);
+    // Add user data
+    users.forEach((user, index) => {
+      pdfDoc
+        .fontSize(12)
+        .font("Helvetica")
+        .fillColor("black")
+        .text(`${index + 1}. ${user.full_name} - ${user.phone}`, {
+          align: "left",
+        })
+        .moveDown(0.5);
+    });
 
     // Add footer
     pdfDoc
@@ -115,37 +111,47 @@ const createUser = async (userData, chatId, bot) => {
 
     pdfDoc.end();
 
-    // Wait for the PDF to be fully written
-    writeStream.on("finish", async () => {
-      try {
-        // Check if the file exists before attempting to send it
-        if (fs.existsSync(filePath)) {
-          const fileOptions = {
-            filename: fileName, // Specify the filename to send
-            contentType: "application/pdf", // Explicitly specify the content type
-          };
+    return filePath;
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    throw error;
+  }
+};
 
-          await bot.sendDocument(
-            chatId,
-            fs.createReadStream(filePath),
-            {},
-            fileOptions
-          );
+// Create a new user
+const createUser = async (userData, chatId, bot) => {
+  try {
+    // Check if the phone number already exists
+    const existingUser = await User.findByPhone(userData.phone);
+    if (existingUser) {
+      bot.sendMessage(chatId, "❌ Bu telefon raqam ro'yxatdan o'tgan.");
+      return;
+    }
 
-          bot.sendMessage(
-            chatId,
-            `📍 Bizning manzil: [Dreams School](https://maps.app.goo.gl/bJJDFhc3p3hWdaRQ7)`
-          );
-        } else {
-          bot.sendMessage(chatId, "Fayl topilmadi.");
-        }
-      } catch (err) {
-        console.error("Error sending document:", err);
-        bot.sendMessage(chatId, "Fayl yuborishda xatolik yuz berdi.");
-      }
-    });
+    // Insert the new user
+    const newUser = await User.create(userData);
 
-    // Confirmation message to the user
+    // Generate PDF for the user
+    const pdfDir = path.resolve(__dirname, "../pdfs");
+    if (!fs.existsSync(pdfDir)) {
+      fs.mkdirSync(pdfDir);
+    }
+
+    const fileName = `student_${newUser.phone}.pdf`;
+    const filePath = path.join(pdfDir, fileName);
+
+    await generateUserPDF(newUser, filePath);
+
+    // Send the PDF to the user
+    if (fs.existsSync(filePath)) {
+      await bot.sendDocument(chatId, fs.createReadStream(filePath), {
+        filename: fileName,
+        contentType: "application/pdf",
+      });
+      fs.unlinkSync(filePath); // Delete the file after sending
+    }
+
+    // Confirmation message
     bot.sendMessage(
       chatId,
       `${newUser.full_name} Dreams School uchun ro'yxatdan o'tkazildi.`
@@ -155,15 +161,11 @@ const createUser = async (userData, chatId, bot) => {
     await generateAllUsersPDF();
   } catch (error) {
     console.error("Error creating user:", error);
-
-    if (error.code === "23505") {
-      bot.sendMessage(chatId, "Bunday telefon raqam ro'yxatdan o'tgan.");
-    } else {
-      bot.sendMessage(chatId, "Ro'yxatdan o'tkazishda xatolik yuz berdi.");
-    }
+    bot.sendMessage(chatId, "❌ Ro'yxatdan o'tkazishda xatolik yuz berdi.");
   }
 };
 
+// Delete a user
 const deleteUser = async (userId, chatId, bot) => {
   try {
     const user = await User.findById(userId);
@@ -179,10 +181,14 @@ const deleteUser = async (userId, chatId, bot) => {
     await generateAllUsersPDF();
   } catch (error) {
     console.error("Error deleting user:", error);
-    bot.sendMessage(chatId, "Foydalanuvchini o'chirishda xatolik yuz berdi.");
+    bot.sendMessage(
+      chatId,
+      "❌ Foydalanuvchini o'chirishda xatolik yuz berdi."
+    );
   }
 };
 
+// Get users with pagination
 const getUsersWithPagination = async (page, chatId, bot) => {
   const limit = 10;
   const offset = (page - 1) * limit;
@@ -227,14 +233,16 @@ const getUsersWithPagination = async (page, chatId, bot) => {
     );
   } catch (error) {
     console.error("Error fetching users:", error);
-    bot.sendMessage(chatId, "Foydalanuvchilarni olishda xatolik yuz berdi.");
+    bot.sendMessage(chatId, "❌ Foydalanuvchilarni olishda xatolik yuz berdi.");
   }
 };
 
+// Generate an Excel file with all users
 const generateAllUsersExcel = async () => {
   try {
     const users = await User.findAll();
     const excelDir = path.resolve(__dirname, "../excel");
+
     if (!fs.existsSync(excelDir)) {
       fs.mkdirSync(excelDir);
     }
@@ -257,35 +265,17 @@ const generateAllUsersExcel = async () => {
     const worksheet = XLSX.utils.json_to_sheet(excelData);
 
     // Set column widths
-    const colWidths = [
-      { wch: 4 }, // №
-      { wch: 30 }, // F.I.O
-      { wch: 15 }, // Tug'ilgan sana
-      { wch: 15 }, // Telefon
-      { wch: 20 }, // Qayerdan
-      { wch: 25 }, // Maktab
-      { wch: 10 }, // Sinf
-      { wch: 15 }, // Qo'shimcha telefon
-      { wch: 15 }, // Status
+    worksheet["!cols"] = [
+      { wch: 4 },
+      { wch: 30 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 20 },
+      { wch: 25 },
+      { wch: 10 },
+      { wch: 15 },
+      { wch: 15 },
     ];
-    worksheet["!cols"] = colWidths;
-
-    // Style the headers (make them bold)
-    const range = XLSX.utils.decode_range(worksheet["!ref"]);
-    const headerStyle = {
-      font: {
-        bold: true,
-      },
-      alignment: {
-        horizontal: "center",
-        vertical: "center",
-      },
-    };
-    for (let C = range.s.c; C <= range.e.c; ++C) {
-      const headerCell = XLSX.utils.encode_cell({ r: 0, c: C });
-      if (!worksheet[headerCell].s) worksheet[headerCell].s = {};
-      worksheet[headerCell].s = headerStyle;
-    }
 
     // Add the worksheet to the workbook
     XLSX.utils.book_append_sheet(workbook, worksheet, "O'quvchilar ro'yxati");
@@ -294,9 +284,7 @@ const generateAllUsersExcel = async () => {
     const filePath = path.join(excelDir, "all_users.xlsx");
     XLSX.writeFile(workbook, filePath, {
       bookType: "xlsx",
-      bookSST: false,
       type: "binary",
-      cellStyles: true,
     });
 
     console.log("Excel file generated successfully");
@@ -312,4 +300,5 @@ module.exports = {
   deleteUser,
   getUsersWithPagination,
   generateAllUsersExcel,
+  generateAllUsersPDF,
 };
