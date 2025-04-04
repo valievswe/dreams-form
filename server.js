@@ -3,31 +3,36 @@ const express = require("express");
 const path = require("path");
 const { startBot } = require("./bot/bot"); // We'll create this file next
 
+const dotenv = require("dotenv");
+dotenv.config(); // Load environment variables from .env file
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Serve static files from the public directory
+const ejs = require("ejs");
+app.set("views", path.join(__dirname, "public/pages")); // Ensure Express looks for EJS files in /views
+app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-  res.send("Welcome to the server! Use /start to begin the bot interaction.");
+  res.render("home.ejs", { title: "Home" });
 });
 
 // Routes for your pages
 app.get("/maktab", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "maktab.html"));
+  res.render("maktab.ejs", { title: "Maktab" });
 });
 
 app.get("/prezident-m", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "prezident-m.html"));
+  res.render("prezident-m.ejs", { title: "Prezident Maktabi" });
 });
 
 app.get("/mental-m", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "mental-m.html"));
+  res.render("mental-m.ejs", { title: "Mental Arifmetika" });
 });
 
 app.get("/test-imtihon", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "test-imtihon.html"));
+  res.render("test-imtihon.ejs", { title: "Test Imtihonlari" });
 });
 
 // Start both Express server and Telegram bot

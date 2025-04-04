@@ -29,7 +29,7 @@ function handleMessage(message, ctx, isAdmin, keyboard, users) {
             [
               {
                 text: "Ro'yxatdan o'tish",
-                web_app: { url: "https://73d3-213-230-82-192.ngrok-free.app/" },
+                web_app: { url: "https://dd1f-213-230-82-192.ngrok-free.app/" },
               },
             ],
           ],
@@ -38,19 +38,19 @@ function handleMessage(message, ctx, isAdmin, keyboard, users) {
       break;
     case "Prezident maktabi uchun qabul":
       ctx.replyWithHTML(
-        "Opening Prezident Maktabi form...\n<a href='https://73d3-213-230-82-192.ngrok-free.app/prezident-m'>Click here</a>",
+        "Opening Prezident Maktabi form...\n<a href='https://dd1f-213-230-82-192.ngrok-free.app/prezident-m'>Click here</a>",
         { reply_markup: keyboard }
       );
       break;
     case "Mental arifmetika":
       ctx.replyWithHTML(
-        "Opening Mental Arifmetika form...\n<a href='https://73d3-213-230-82-192.ngrok-free.app/mental-m'>Click here</a>",
+        "Opening Mental Arifmetika form...\n<a href='https://dd1f-213-230-82-192.ngrok-free.app/mental-m'>Click here</a>",
         { reply_markup: keyboard }
       );
       break;
     case "Test imtihonlari":
       ctx.replyWithHTML(
-        "Opening Test Imtihonlari form...\n<a href='https://73d3-213-230-82-192.ngrok-free.app/test-imtihon'>Click here</a>",
+        "Opening Test Imtihonlari form...\n<a href='https://dd1f-213-230-82-192.ngrok-free.app/test-imtihon'>Click here</a>",
         { reply_markup: keyboard }
       );
       break;
