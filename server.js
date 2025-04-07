@@ -23,16 +23,16 @@ app.get("/maktab", (req, res) => {
   res.render("maktab.ejs", { title: "Maktab" });
 });
 
-app.get("/prezident-m", (req, res) => {
-  res.render("prezident-m.ejs", { title: "Prezident Maktabi" });
+app.get("/president", (req, res) => {
+  res.render("president.ejs", { title: "Prezident Maktabi" });
 });
 
-app.get("/mental-m", (req, res) => {
-  res.render("mental-m.ejs", { title: "Mental Arifmetika" });
+app.get("/mental", (req, res) => {
+  res.render("mental.ejs", { title: "Mental Arifmetika" });
 });
 
-app.get("/test-imtihon", (req, res) => {
-  res.render("test-imtihon.ejs", { title: "Test Imtihonlari" });
+app.get("/imtihon", (req, res) => {
+  res.render("imtihon.ejs", { title: "Test Imtihonlari" });
 });
 
 // Start both Express server and Telegram bot

@@ -41,12 +41,20 @@ body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   gap: 1.2rem;
 }
-
+.btn_container {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
 /* Button Styles */
 .btn {
-  width: auto;
+  width: 100%;
   min-width: 140px;
   background-color: #3b0756; /* Deep Purple */
   color: #fff;
