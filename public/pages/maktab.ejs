@@ -1,12 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Maktab Page</title>
+    <title>Maktab Ro'yxatdan O'tish</title>
+    <link rel="stylesheet" href="../css/home.css" />
     <link rel="stylesheet" href="../css/form.css" />
+    <script defer src="../scripts/register.js"></script>
   </head>
   <body>
-    <h1 class="title">Maktab uchun qabul</h1>
+    <div class="container">
+      <h1 class="title">Maktabga Ro'yxatdan O'tish</h1>
+      <form id="registrationForm" class="form">
+        <label>
+          To‘liq ismi:
+          <input
+            type="text"
+            name="fullname"
+            required
+            placeholder="Ism Familiya"
+          />
+        </label>
+
+        <label>
+          Tug‘ilgan sana:
+          <input type="date" name="dob" required />
+        </label>
+
+        <label>
+          Qayerdansiz:
+          <input
+            type="text"
+            name="location"
+            required
+            placeholder="Hudud yoki shahar"
+          />
+        </label>
+
+        <label>
+          Oldingi maktab raqami:
+          <input
+            type="number"
+            name="previous_school"
+            required
+            placeholder="Maktab raqami"
+          />
+        </label>
+
+        <label>
+          Qaysi sinfga yozilmoqchisiz:
+          <select name="grade" required>
+            <option value="" disabled selected>Sinfni tanlang</option>
+            <!-- Grades from 0 to 11 -->
+            <script>
+              for (let i = 0; i <= 11; i++) {
+                document.write(`<option value="${i}">${i} - sinf</option>`);
+              }
+            </script>
+          </select>
+        </label>
+
+        <label>
+          Telefon raqamingiz:
+          <input
+            type="tel"
+            name="phone"
+            required
+            placeholder="+998 90 123 45 67"
+            pattern="^\+998\s?\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$"
+          />
+        </label>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+        <div class="btn_container">
+          <button type="submit" class="btn">Yuborish</button>
+        </div>
+      </form>
+    </div>
   </body>
 </html>

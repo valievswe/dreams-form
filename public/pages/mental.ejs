@@ -5,8 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mental Arifmetika uchun qabul</title>
     <link rel="stylesheet" href="../css/form.css" />
+    <link rel="stylesheet" href="../css/home.css" />
+    <script defer src="../scripts/register.js"></script>
+
+    <script>
+      // Function to calculate age from date of birth
+      function calculateAge() {
+        const dob = document.querySelector("input[name='dob']").value;
+        if (dob) {
+          const birthDate = new Date(dob);
+          const today = new Date();
+          let age = today.getFullYear() - birthDate.getFullYear();
+          const month = today.getMonth();
+          if (
+            month < birthDate.getMonth() ||
+            (month === birthDate.getMonth() &&
+              today.getDate() < birthDate.getDate())
+          ) {
+            age--;
+          }
+          document.querySelector("input[name='age']").value = age;
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Update age when the date of birth is selected
+        document
+          .querySelector("input[name='dob']")
+          .addEventListener("input", calculateAge);
+      });
+    </script>
   </head>
   <body>
     <h1 class="title">Mental arifmetika uchun qabul</h1>
+
+    <form id="mentalRegistrationForm" class="form">
+      <label>
+        To‘liq ismi:
+        <input
+          type="text"
+          name="fullname"
+          required
+          placeholder="Ism Familiya"
+        />
+      </label>
+
+      <label>
+        Tug‘ilgan sana:
+        <input type="date" name="dob" required />
+      </label>
+
+      <label>
+        Yoshingiz:
+        <input
+          type="text"
+          name="age"
+          required
+          placeholder="Yoshni ko'rsating"
+          readonly
+        />
+      </label>
+
+      <label>
+        Qayerdansiz:
+        <input
+          type="text"
+          name="location"
+          required
+          placeholder="Hudud yoki shahar"
+        />
+      </label>
+
+      <label>
+        Telefon raqamingiz:
+        <input
+          type="tel"
+          name="phone"
+          required
+          placeholder="+998 90 123 45 67"
+          pattern="^\+998\s?\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$"
+        />
+      </label>
+
+      <label>
+        Mental arifmetika darajasi:
+        <select name="level" required>
+          <option value="" disabled selected>Darajani tanlang</option>
+          <option value="beginner">Boshlang‘ich</option>
+          <option value="intermediate">O‘rta daraja</option>
+          <option value="advanced">Yuqori daraja</option>
+        </select>
+      </label>
+
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+      <div class="btn_container">
+        <button type="submit" class="btn">Yuborish</button>
+      </div>
+    </form>
   </body>
 </html>
