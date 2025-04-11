@@ -1,5 +1,6 @@
 const formData = new FormData(form);
 const data = Object.fromEntries(formData.entries());
+const initData = Telegram.WebApp.initData;
 
 fetch("/mkregister", {
   method: "POST",

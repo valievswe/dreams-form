@@ -1,11 +1,11 @@
 document.querySelectorAll("form").forEach((form) => {
   form.addEventListener("submit", function (e) {
-    e.preventDefault(); // Important to prevent full form reload
+    e.preventDefault(); // Prevent full page reload
 
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
 
-    // Optional: Uzbekistan phone format check
+    // Validate Uzbekistan phone format
     const phoneRegex = /^\+998\s?\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$/;
     if (!phoneRegex.test(data.phone)) {
       alert(
@@ -14,36 +14,51 @@ document.querySelectorAll("form").forEach((form) => {
       return;
     }
 
-    // Determine the target URL based on the form ID
+    // Determine target URL
     let url;
-    if (this.id === "imtihon") {
-      url = "/imtihonregister";
-    } else if (this.id === "president") {
-      url = "/presidentregister";
-    } else if (this.id === "mental") {
-      url = "/mentalregister";
-    } else {
-      url = "/mkregister"; // Default URL if no match
+    switch (this.id) {
+      case "imtihon":
+        url = "/imtihonregister";
+        break;
+      case "president":
+        url = "/presidentregister";
+        break;
+      case "mental":
+        url = "/mentalregister";
+        break;
+      default:
+        url = "/mkregister";
     }
 
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "CSRF-Token": data._csrf, // <-- extract from form field
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Yuborishda xatolik");
-        return res.json();
+    // Check if Telegram.WebApp is defined (check only in Telegram Mini App)
+    if (typeof Telegram !== "undefined" && Telegram.WebApp) {
+      const initData = Telegram.WebApp.initData;
+
+      // Send the form data along with Telegram initData
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "CSRF-Token": data._csrf, // CSRF token for security
+        },
+        body: JSON.stringify({
+          ...data,
+          initData, // attach Telegram signature
+        }),
       })
-      .then((res) => {
-        alert("Muvaffaqiyatli yuborildi!");
-        this.reset();
-      })
-      .catch((err) => {
-        alert("Xatolik yuz berdi: " + err.message);
-      });
+        .then((res) => {
+          if (!res.ok) throw new Error("Yuborishda xatolik");
+          return res.json();
+        })
+        .then((res) => {
+          alert("Muvaffaqiyatli yuborildi!");
+          this.reset();
+        })
+        .catch((err) => {
+          alert("Xatolik yuz berdi: " + err.message);
+        });
+    } else {
+      alert("Telegram Web App not detected. Please try again in Telegram.");
+    }
   });
 });
