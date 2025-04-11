@@ -47,7 +47,7 @@ const startBot = async () => {
       users.set(userId, userInfo);
 
       const keyboard = getKeyboardForUser(userId);
-      ctx.reply("Welcome to the bot! Please select an option:", {
+      ctx.reply("Assalomu alaykum Dreams Schoolga xush kelibsiz", {
         reply_markup: keyboard,
       });
     });
@@ -57,7 +57,7 @@ const startBot = async () => {
       const userId = ctx.from.id;
       const keyboard = getKeyboardForUser(userId);
       ctx.reply(
-        "This bot is connected to a Telegram Mini App. Use the keyboard below to navigate.",
+        "Bu bot orqali siz maktab uchun qabulga ariza berishingiz mumkin. ",
         { reply_markup: keyboard }
       );
     });
@@ -98,4 +98,4 @@ const startBot = async () => {
   }
 };
 
-module.exports = { startBot };
+module.exports = { startBot, bot };

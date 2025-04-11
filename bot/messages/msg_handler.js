@@ -30,7 +30,7 @@ function handleMessage(message, ctx, isAdmin, keyboard, users) {
               {
                 text: "Maktab uchun qabul",
                 web_app: {
-                  url: "https://da35-185-139-138-143.ngrok-free.app/maktab",
+                  url: "https://3275-213-230-102-251.ngrok-free.app/maktab",
                 },
               },
             ],
@@ -38,7 +38,7 @@ function handleMessage(message, ctx, isAdmin, keyboard, users) {
               {
                 text: "Prezident maktabi uchun qabul",
                 web_app: {
-                  url: "https://da35-185-139-138-143.ngrok-free.app/president",
+                  url: "https://3275-213-230-102-251.ngrok-free.app/president",
                 },
               },
             ],
@@ -46,7 +46,7 @@ function handleMessage(message, ctx, isAdmin, keyboard, users) {
               {
                 text: "Mental arifmetika",
                 web_app: {
-                  url: "https://da35-185-139-138-143.ngrok-free.app/mental",
+                  url: "https://3275-213-230-102-251.ngrok-free.app/mental",
                 },
               },
             ],
@@ -54,7 +54,7 @@ function handleMessage(message, ctx, isAdmin, keyboard, users) {
               {
                 text: "DTM test imtihonlari",
                 web_app: {
-                  url: "https://da35-185-139-138-143.ngrok-free.app/imtihon",
+                  url: "https://3275-213-230-102-251.ngrok-free.app/imtihon",
                 },
               },
             ],
