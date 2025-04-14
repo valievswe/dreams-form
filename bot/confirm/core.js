@@ -2,7 +2,7 @@ const crypto = require("crypto");
 const querystring = require("querystring");
 const fs = require("fs");
 const path = require("path");
-const { bot } = require("./bot"); // you'll need to export `bot` from bot.js
+const { bot } = require("./bot");
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 
