@@ -10,6 +10,15 @@ const { startBot } = require("./bot/bot"); // Adjust the path if necessary
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const cors = require("cors");
+app.use(
+  cors({
+    origin: "https://web.telegram.org", // Allow only Telegram Web App
+    methods: "POST",
+    allowedHeaders: ["Content-Type", "CSRF-Token", "Authorization"],
+  })
+);
+
 // Middleware
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));

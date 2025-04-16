@@ -34,6 +34,9 @@ document.querySelectorAll("form").forEach((form) => {
     if (typeof Telegram !== "undefined" && Telegram.WebApp) {
       const initData = Telegram.WebApp.initData;
 
+      // Log initData to inspect the data
+      console.log("initData from Telegram:", initData);
+
       // Send the form data along with Telegram initData
       fetch(url, {
         method: "POST",
@@ -46,8 +49,11 @@ document.querySelectorAll("form").forEach((form) => {
           initData, // attach Telegram signature
         }),
       })
-        .then((res) => {
-          if (!res.ok) throw new Error("Yuborishda xatolik");
+        .then(async (res) => {
+          if (!res.ok) {
+            const errorBody = await res.json(); // try to read JSON body
+            throw new Error(errorBody.error || "Yuborishda xatolik");
+          }
           return res.json();
         })
         .then((res) => {
