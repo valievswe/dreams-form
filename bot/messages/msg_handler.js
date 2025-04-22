@@ -32,7 +32,7 @@ async function handleMessage(message, ctx, isAdmin, keyboard, users) {
               {
                 text: "Maktab uchun qabul",
                 web_app: {
-                  url: "https://2235-213-230-82-78.ngrok-free.app/maktab",
+                  url: "https://bot-form-8ebc37fceeb6.herokuapp.com/maktab",
                 },
               },
             ],
@@ -40,7 +40,7 @@ async function handleMessage(message, ctx, isAdmin, keyboard, users) {
               {
                 text: "Prezident maktabi uchun qabul",
                 web_app: {
-                  url: "https://2235-213-230-82-78.ngrok-free.app/president",
+                  url: "https://bot-form-8ebc37fceeb6.herokuapp.com/president",
                 },
               },
             ],
@@ -48,7 +48,7 @@ async function handleMessage(message, ctx, isAdmin, keyboard, users) {
               {
                 text: "Mental arifmetika",
                 web_app: {
-                  url: "https://2235-213-230-82-78.ngrok-free.app/mental",
+                  url: "https://bot-form-8ebc37fceeb6.herokuapp.com/mental",
                 },
               },
             ],
@@ -56,7 +56,7 @@ async function handleMessage(message, ctx, isAdmin, keyboard, users) {
               {
                 text: "DTM test imtihonlari",
                 web_app: {
-                  url: "https://2235-213-230-82-78.ngrok-free.app/imtihon",
+                  url: "https://bot-form-8ebc37fceeb6.herokuapp.com/imtihon",
                 },
               },
             ],
@@ -70,7 +70,7 @@ async function handleMessage(message, ctx, isAdmin, keyboard, users) {
         try {
           await ctx.sendChatAction("upload_document");
           const response = await axios.post(
-            `https://2235-213-230-82-78.ngrok-free.app/barchasi`,
+            `https://bot-form-8ebc37fceeb6.herokuapp.com/barchasi`,
             { telegram_id: ctx.from.id.toString() }, // Corrected: using ctx.from.id
             {
               responseType: "arraybuffer",
