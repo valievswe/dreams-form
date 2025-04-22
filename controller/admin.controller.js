@@ -1,8 +1,8 @@
 const xlsx = require("xlsx");
-const mentalController = require("./mentalController");
-const dtmController = require("./dtmController");
-const maktabController = require("./maktabController");
-const presidentController = require("./presidentController");
+const mentalModel = require("../models/mental.model");
+const dtmModel = require("../models/dtm.model");
+const maktabModel = require("../models/maktab.model");
+const presidentModel = require("../models/prmaktab.model");
 
 const adminController = {
   async getAllData(req, res) {
@@ -22,61 +22,57 @@ const adminController = {
     console.log(`Admin access granted for ID: ${telegram_id}`);
 
     try {
-      // 2. Fetch All Data with Parallel Requests
+      // 2. Fetch All Data directly from models
       const [mentalData, dtmData, maktabData, presidentData] =
         await Promise.all([
-          mentalController.getMentals().catch((e) => {
+          mentalModel.getAllMentalEntries().catch((e) => {
             console.error("Mental data error:", e);
             return [];
           }),
-          dtmController.getDTMs().catch((e) => {
+          dtmModel.getAllDTMEntries().catch((e) => {
             console.error("DTM data error:", e);
             return [];
           }),
-          maktabController.getMaktabEntries().catch((e) => {
+          maktabModel.getAllMaktabEntries().catch((e) => {
             console.error("Maktab data error:", e);
             return [];
           }),
-          presidentController.getPresidentEntries().catch((e) => {
+          presidentModel.getAllPresidentEntries().catch((e) => {
             console.error("President data error:", e);
             return [];
           }),
         ]);
 
-      // 3. Validate Data
+      // 3. Validate data structure
       const dataValid = [mentalData, dtmData, maktabData, presidentData].every(
         (data) => Array.isArray(data)
       );
 
       if (!dataValid) {
-        throw new Error("Invalid data format from one or more controllers");
+        throw new Error("Invalid data format from one or more models");
       }
 
-      // 4. Create Excel Workbook
+      // 4. Generate workbook
       const wb = xlsx.utils.book_new();
 
-      // Add sheets only if data exists
       if (mentalData.length > 0) {
-        const mentalSheet = xlsx.utils.json_to_sheet(mentalData);
-        xlsx.utils.book_append_sheet(wb, mentalSheet, "Mental Data");
+        const sheet = xlsx.utils.json_to_sheet(mentalData);
+        xlsx.utils.book_append_sheet(wb, sheet, "Mental Data");
       }
-
       if (dtmData.length > 0) {
-        const dtmSheet = xlsx.utils.json_to_sheet(dtmData);
-        xlsx.utils.book_append_sheet(wb, dtmSheet, "DTM Data");
+        const sheet = xlsx.utils.json_to_sheet(dtmData);
+        xlsx.utils.book_append_sheet(wb, sheet, "DTM Data");
       }
-
       if (maktabData.length > 0) {
-        const maktabSheet = xlsx.utils.json_to_sheet(maktabData);
-        xlsx.utils.book_append_sheet(wb, maktabSheet, "Maktab Data");
+        const sheet = xlsx.utils.json_to_sheet(maktabData);
+        xlsx.utils.book_append_sheet(wb, sheet, "Maktab Data");
       }
-
       if (presidentData.length > 0) {
-        const presidentSheet = xlsx.utils.json_to_sheet(presidentData);
-        xlsx.utils.book_append_sheet(wb, presidentSheet, "President Data");
+        const sheet = xlsx.utils.json_to_sheet(presidentData);
+        xlsx.utils.book_append_sheet(wb, sheet, "President Data");
       }
 
-      // 5. Generate and Send Excel File
+      // 5. Respond with Excel file
       const buffer = xlsx.write(wb, {
         bookType: "xlsx",
         type: "buffer",

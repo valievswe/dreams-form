@@ -92,6 +92,22 @@ async function handleMessage(message, ctx, isAdmin, keyboard, users) {
       }
       break;
 
+    case "Mening ma'lumotlarim":
+      const user = users.get(userId);
+      if (user) {
+        const userInfoMessage =
+          `Sizning ma'lumotlaringiz:\n\n` +
+          `Ism: ${user.firstName}\n` +
+          `Familiya: ${user.lastName}\n` +
+          `Telegram ID: ${userId}\n` +
+          `Vaqt: ${user.timestamp}`;
+        ctx.reply(userInfoMessage, { reply_markup: keyboard });
+      } else {
+        ctx.reply("Sizning ma'lumotlaringiz topilmadi.", {
+          reply_markup: keyboard,
+        });
+      }
+      break;
     default:
       const response = handleSimpleMessage(message);
       ctx.reply(response, { reply_markup: keyboard });
