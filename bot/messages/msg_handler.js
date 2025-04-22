@@ -8,7 +8,9 @@
  */
 const { Markup } = require("telegraf");
 
-function handleMessage(message, ctx, isAdmin, keyboard, users) {
+const axios = require("axios");
+
+async function handleMessage(message, ctx, isAdmin, keyboard, users) {
   const userId = ctx.from.id;
 
   // Update user info
@@ -30,7 +32,7 @@ function handleMessage(message, ctx, isAdmin, keyboard, users) {
               {
                 text: "Maktab uchun qabul",
                 web_app: {
-                  url: "https://1880-94-230-228-165.ngrok-free.app/maktab",
+                  url: "https://2235-213-230-82-78.ngrok-free.app/maktab",
                 },
               },
             ],
@@ -38,7 +40,7 @@ function handleMessage(message, ctx, isAdmin, keyboard, users) {
               {
                 text: "Prezident maktabi uchun qabul",
                 web_app: {
-                  url: "https://1880-94-230-228-165.ngrok-free.app/president",
+                  url: "https://2235-213-230-82-78.ngrok-free.app/president",
                 },
               },
             ],
@@ -46,7 +48,7 @@ function handleMessage(message, ctx, isAdmin, keyboard, users) {
               {
                 text: "Mental arifmetika",
                 web_app: {
-                  url: "https://1880-94-230-228-165.ngrok-free.app/mental",
+                  url: "https://2235-213-230-82-78.ngrok-free.app/mental",
                 },
               },
             ],
@@ -54,7 +56,7 @@ function handleMessage(message, ctx, isAdmin, keyboard, users) {
               {
                 text: "DTM test imtihonlari",
                 web_app: {
-                  url: "https://1880-94-230-228-165.ngrok-free.app/imtihon",
+                  url: "https://2235-213-230-82-78.ngrok-free.app/imtihon",
                 },
               },
             ],
@@ -65,21 +67,31 @@ function handleMessage(message, ctx, isAdmin, keyboard, users) {
 
     case "Ma'lumotlarni olish":
       if (isAdmin) {
-        let userDataText = "Registered Users:\n";
-        if (users.size === 0) {
-          userDataText = "No users have interacted with the bot yet.";
-        } else {
-          users.forEach((info, id) => {
-            userDataText += `\nID: ${id}\nUsername: @${info.username}\nName: ${info.firstName} ${info.lastName}\nLast Active: ${info.timestamp}\n`;
+        try {
+          const response = await axios.post(
+            `https://2235-213-230-82-78.ngrok-free.app/barchasi`, // Remove space
+            { telegram_id: ctx.from.id.toString() },
+            {
+              responseType: "arraybuffer",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          await ctx.replyWithDocument({
+            source: response.data,
+            filename: "barchasi.xlsx",
           });
+        } catch (err) {
+          console.error("Full error:", err.response?.data || err.message);
+          await ctx.reply(
+            `❌ Xatolik: ${err.response?.data?.error || "Server xatosi"}`
+          );
         }
-        ctx.reply(userDataText, { reply_markup: keyboard });
-      } else {
-        ctx.reply("This command is for admins only.", {
-          reply_markup: keyboard,
-        });
       }
       break;
+
     default:
       const response = handleSimpleMessage(message);
       ctx.reply(response, { reply_markup: keyboard });
