@@ -10,76 +10,74 @@
     <script defer src="https://telegram.org/js/telegram-web-app.js"></script>
   </head>
   <body>
-    <div class="container">
-      <h1 class="title">
-        "DREAMS SCHOOL INNOVATSION XALQARO MAKTABIDA TAHSIL OLISH UCHUN
-        ROʻYXATDAN OʻTISH!
-      </h1>
-      <form id="registrationForm" class="form">
-        <label>
-          To‘liq ismi:
-          <input
-            type="text"
-            name="fullname"
-            required
-            placeholder="Ism Familiya"
-          />
-        </label>
+    <h1 class="title">
+      "DREAMS SCHOOL INNOVATSION XALQARO MAKTABIDA TAHSIL OLISH UCHUN ROʻYXATDAN
+      OʻTISH!
+    </h1>
+    <form id="registrationForm" class="form">
+      <label>
+        To‘liq ismi:
+        <input
+          type="text"
+          name="fullname"
+          required
+          placeholder="Ism Familiya"
+        />
+      </label>
 
-        <label>
-          Tug‘ilgan sana:
-          <input type="date" name="dob" required />
-        </label>
+      <label>
+        Tug‘ilgan sana:
+        <input type="date" name="dob" required />
+      </label>
 
-        <label>
-          Qayerdansiz:
-          <input
-            type="text"
-            name="location"
-            required
-            placeholder="Hudud yoki shahar"
-          />
-        </label>
+      <label>
+        Qayerdansiz:
+        <input
+          type="text"
+          name="location"
+          required
+          placeholder="Hudud yoki shahar"
+        />
+      </label>
 
-        <label>
-          Oldingi maktab raqami:
-          <input
-            type="number"
-            name="previous_school"
-            required
-            placeholder="Maktab raqami"
-          />
-        </label>
+      <label>
+        Oldingi maktab raqami:
+        <input
+          type="number"
+          name="previous_school"
+          required
+          placeholder="Maktab raqami"
+        />
+      </label>
 
-        <label>
-          Qaysi sinfga yozilmoqchisiz:
-          <select name="grade" required>
-            <option value="" disabled selected>Sinfni tanlang</option>
-            <!-- Grades from 0 to 11 -->
-            <script>
-              for (let i = 0; i <= 11; i++) {
-                document.write(`<option value="${i}">${i} - sinf</option>`);
-              }
-            </script>
-          </select>
-        </label>
+      <label>
+        Qaysi sinfga yozilmoqchisiz:
+        <select name="grade" required>
+          <option value="" disabled selected>Sinfni tanlang</option>
+          <!-- Grades from 0 to 11 -->
+          <script>
+            for (let i = 0; i <= 11; i++) {
+              document.write(`<option value="${i}">${i} - sinf</option>`);
+            }
+          </script>
+        </select>
+      </label>
 
-        <label>
-          Telefon raqamingiz:
-          <input
-            type="tel"
-            name="phone"
-            required
-            placeholder="+998 90 123 45 67"
-            pattern="^\+998\s?\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$"
-          />
-        </label>
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <label>
+        Telefon raqamingiz:
+        <input
+          type="tel"
+          name="phone"
+          required
+          placeholder="+998 90 123 45 67"
+          pattern="^\+998\s?\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$"
+        />
+      </label>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
 
-        <div class="btn_container">
-          <button type="submit" class="btn">Yuborish</button>
-        </div>
-      </form>
-    </div>
+      <div class="btn_container">
+        <button type="submit" class="btn">Yuborish</button>
+      </div>
+    </form>
   </body>
 </html>

@@ -10,69 +10,63 @@
     <link rel="stylesheet" href="../css/home.css" />
   </head>
   <body>
-    <div class="container">
-      <h1 class="title">
-        BILIM VA MALAKALARNI BAXOLASH AGENTLIGI - DTM IMTIHONIDA QATNASHISH
-        UCHUN ROʻYXATDAN OʻTISH!
-      </h1>
-      <form id="imtihon" class="form">
-        <label>
-          To'liq ismi:
-          <input
-            type="text"
-            name="fullname"
-            required
-            placeholder="Ism Familiya"
-          />
-        </label>
+    <h1 class="title">
+      BILIM VA MALAKALARNI BAXOLASH AGENTLIGI - DTM IMTIHONIDA QATNASHISH UCHUN
+      ROʻYXATDAN OʻTISH!
+    </h1>
+    <form id="imtihon" class="form">
+      <label>
+        To'liq ismi:
+        <input
+          type="text"
+          name="fullname"
+          required
+          placeholder="Ism Familiya"
+        />
+      </label>
 
-        <label>
-          Tug'ilgan sana:
-          <input type="date" name="dob" required />
-        </label>
+      <label>
+        Tug'ilgan sana:
+        <input type="date" name="dob" required />
+      </label>
 
-        <label>
-          Telefon raqamingiz:
-          <input
-            type="tel"
-            name="phone"
-            required
-            placeholder="+998 90 123 45 67"
-            pattern="^\+998\s?\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$"
-          />
-        </label>
+      <label>
+        Telefon raqamingiz:
+        <input
+          type="tel"
+          name="phone"
+          required
+          placeholder="+998 90 123 45 67"
+          pattern="^\+998\s?\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$"
+        />
+      </label>
 
-        <label>
-          Tanlangan fan:
-          <select name="subject" required>
-            <option value="" disabled selected>Fanni tanlang</option>
-            <option value="INGLIZ TILINI ( MOCK ) TESTLARI">
-              INGLIZ TILINI ( MOCK ) TESTLARI
-            </option>
-            <option value="MATEMATIKA - INGLIZ TILI">
-              MATEMATIKA - INGLIZ TILI
-            </option>
-            <option value="KIMYO - BIOLOGIYA">KIMYO - BIOLOGIYA</option>
-            <option value="MATEMATIKA - FIZIKA">MATEMATIKA - FIZIKA</option>
-            <option value="ONA TILI - INGLIZ TILI">
-              ONA TILI - INGLIZ TILI
-            </option>
-            <option value="HUQUQ - INGLIZ TILI">HUQUQ - INGLIZ TILI</option>
-            <option value="TARIX - HUQUQ">TARIX - HUQUQ</option>
-            <option value="RUS TILI - TARIX">RUS TILI - TARIX</option>
-            <option value="RUS TILI - INGLIZ TILI">
-              RUS TILI - INGLIZ TILI
-            </option>
-            <option value="ONA TILI - MATEMATIKA">ONA TILI - MATEMATIKA</option>
-          </select>
-        </label>
+      <label>
+        Tanlangan fan:
+        <select name="subject" required>
+          <option value="" disabled selected>Fanni tanlang</option>
+          <option value="INGLIZ TILINI ( MOCK ) TESTLARI">
+            INGLIZ TILINI ( MOCK ) TESTLARI
+          </option>
+          <option value="MATEMATIKA - INGLIZ TILI">
+            MATEMATIKA - INGLIZ TILI
+          </option>
+          <option value="KIMYO - BIOLOGIYA">KIMYO - BIOLOGIYA</option>
+          <option value="MATEMATIKA - FIZIKA">MATEMATIKA - FIZIKA</option>
+          <option value="ONA TILI - INGLIZ TILI">ONA TILI - INGLIZ TILI</option>
+          <option value="HUQUQ - INGLIZ TILI">HUQUQ - INGLIZ TILI</option>
+          <option value="TARIX - HUQUQ">TARIX - HUQUQ</option>
+          <option value="RUS TILI - TARIX">RUS TILI - TARIX</option>
+          <option value="RUS TILI - INGLIZ TILI">RUS TILI - INGLIZ TILI</option>
+          <option value="ONA TILI - MATEMATIKA">ONA TILI - MATEMATIKA</option>
+        </select>
+      </label>
 
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
 
-        <div class="btn_container">
-          <button type="submit" class="btn">Yuborish</button>
-        </div>
-      </form>
-    </div>
+      <div class="btn_container">
+        <button type="submit" class="btn">Yuborish</button>
+      </div>
+    </form>
   </body>
 </html>
